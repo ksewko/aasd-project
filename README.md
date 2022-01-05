@@ -8,8 +8,9 @@ sudo /etc/init.d/prosody start
 
 dodawanie agenta:
 
-prosodyctl register [nazwa agenta] [nazwa virtual hosta] [hasło]
+prosodyctl register nazwa_agenta nazwa_virtual_hosta hasło
 localhost = domyślny virtual host
+nazwa_agenta@nazwa_virtual_hosta = jid agenta
 
 prosodyctl register windows localhost password
 prosodyctl register sensors localhost password
