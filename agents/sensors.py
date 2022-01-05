@@ -8,13 +8,11 @@ class SensorsAgent(Agent):
 
     class SendTempToWindowsAgent(CyclicBehaviour):
         async def on_start(self):
-            print("Starting behaviour [SensorsAgent]. . .")
             self.temp = 0
 
         async def run(self):
             
             self.temp = random.randint(18, 22)
-            print("Temperature: {}".format(self.temp))
 
             msg = Message(to="windows@localhost")       # jid odbiorcy
             msg.set_metadata("msg_type", "INF")         # metadata wiadomości (jak w dokumentacji)
@@ -23,7 +21,6 @@ class SensorsAgent(Agent):
             msg.body = str(self.temp)                   # pomiar (musi być string)
 
             await self.send(msg)
-            print("Message sent!")
 
             self.exit_code = "Job Finished!"
 
@@ -33,6 +30,5 @@ class SensorsAgent(Agent):
             await asyncio.sleep(1)
 
     async def setup(self):
-        print("Agent starting [SensorsAgent]. . .")
         self.b = self.SendTempToWindowsAgent()
         self.add_behaviour(self.b)
