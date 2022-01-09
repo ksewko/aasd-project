@@ -1,6 +1,7 @@
 import time
 from agents.sensors import SensorsAgent
 from agents.windows import WindowsAgent
+from agents.blinds import BlindsAgent
 
 
 if __name__ == "__main__":
@@ -17,7 +18,7 @@ if __name__ == "__main__":
 
     print("Wait until user interrupts with ctrl+C")
 
-    while windows_agent.is_alive():
+    while windows_agent.is_alive() and blinds_agent.is_alive():
         try:
             time.sleep(1)
         except KeyboardInterrupt:

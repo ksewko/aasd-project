@@ -31,7 +31,7 @@ class BlindsAgent(Agent):
         async def run(self):
             msg = await self.receive(timeout=10) 
             if msg:
-                print("Received temperature: {}".format(msg.body))
+                print("Received temperature [blinds]: {}".format(msg.body))
                 self.temp = int(msg.body)
 
                 msg = Message(to="repo@localhost")       
@@ -55,6 +55,7 @@ class BlindsAgent(Agent):
         template = Template() 
         template.set_metadata("msg_type", "INF")    # otrzymana wiadomość powinna pasować do templatki
         template.set_metadata("sensor_id", "01") 
+        template.set_metadata("sensor_type", "TERM")
         self.add_behaviour(self.rcv_temp, template)
 
         # self.rcv_plan = self.RecvPlan()
