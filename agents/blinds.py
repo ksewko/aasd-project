@@ -12,12 +12,12 @@ class BlindsAgent(Agent):
                 if self.regulate_temp:
                     if self.blinds_state == 'DOWN':
                         self.blinds_state = 'UP'
-                        print("Blinds drawn in room {}".format(self.room_id))
+                        print("Blinds exposed in room {}".format(self.room_id))
             else:
                 if self.regulate_temp:
-                    if self.blinds_state == 'DOWN':
-                        self.blinds_state = 'UP'
-                        print("Blinds exposed in room {}".format(self.room_id))
+                    if self.blinds_state == 'UP':
+                        self.blinds_state = 'DOWN'
+                        print("Blinds drawn in room {}".format(self.room_id))
 
         async def on_start(self):
             print("Starting behaviour [BlindsAgent]. . .")
