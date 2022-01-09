@@ -63,7 +63,7 @@ class SensorsAgent(Agent):
 
 	        msg = Message(to="blinds@localhost")       # jid odbiorcy
 	        msg.set_metadata("msg_type", "INF")         # metadata wiadomości (jak w dokumentacji)
-	        msg.set_metadata("sensor_id", "10")  
+	        msg.set_metadata("sensor_id", "01")  
 	        msg.set_metadata("sensor_type", "UV")       
 	        msg.body = str(self.uv)                   # pomiar (musi być string)
 
