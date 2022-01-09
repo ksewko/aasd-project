@@ -9,6 +9,7 @@ class SensorsAgent(Agent):
     class SendTempToWindowsAgent(CyclicBehaviour):
         async def on_start(self):
             self.temp = 0
+	
 
         async def run(self):
             
@@ -54,17 +55,17 @@ class SensorsAgent(Agent):
 		
 	class SendUvToBlindsAgent(CyclicBehaviour):
 	    async def on_start(self):
-	        self.temp = 0
+	        self.uv = 0
 
 	    async def run(self):
 	        
-	        self.temp = random.randint(0, 100)	#poziom naslonecznienia w % - 0% (pełne zachmurzenie) , 100% (pełne słońce)
+	        self.uv = random.randint(0, 100)	#poziom naslonecznienia w % - 0% (pełne zachmurzenie) , 100% (pełne słońce)
 
 	        msg = Message(to="blinds@localhost")       # jid odbiorcy
 	        msg.set_metadata("msg_type", "INF")         # metadata wiadomości (jak w dokumentacji)
 	        msg.set_metadata("sensor_id", "10")  
 	        msg.set_metadata("sensor_type", "UV")       
-	        msg.body = str(self.temp)                   # pomiar (musi być string)
+	        msg.body = str(self.uv)                   # pomiar (musi być string)
 
 	        await self.send(msg)
 
