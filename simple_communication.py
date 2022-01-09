@@ -1,4 +1,5 @@
 import time
+from agents.floor_heating import FloorHeatingAgent
 from agents.sensors import SensorsAgent
 from agents.windows import WindowsAgent
 from agents.blinds import BlindsAgent
@@ -13,16 +14,22 @@ if __name__ == "__main__":
     future = blinds_agent.start()
     future.result() # wait for receiver agent to be prepared.
 
+    floor_heating_agent = FloorHeatingAgent("floor_heating@localhost", "password")
+    future = floor_heating_agent.start()
+    future.result() # wait for receiver agent to be prepared.
+
     sensors_agent = SensorsAgent("sensors@localhost", "password")
     future = sensors_agent.start()
 
     print("Wait until user interrupts with ctrl+C")
 
-    while windows_agent.is_alive() and blinds_agent.is_alive():
+    alive_agents = [windows_agent, blinds_agent, floor_heating_agent]
+
+    while all(agent.is_alive() for agent in alive_agents):
         try:
             time.sleep(1)
         except KeyboardInterrupt:
             sensors_agent.stop()
-            windows_agent.stop()
-            blinds_agent.stop()
+            for agent in alive_agents:
+                agent.stop()
             break

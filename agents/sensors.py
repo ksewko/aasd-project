@@ -64,11 +64,38 @@ class SensorsAgent(Agent):
             self.exit_code = "Job Finished!"
 
             await asyncio.sleep(1)
+    
+    class SendTempToHeatingAgent(CyclicBehaviour):
+        async def on_start(self):
+            self.temp = 0
+
+        async def run(self):
+
+            self.temp = random.randint(18, 22)
+
+            msg = Message(to="floor_heating@localhost")       # jid odbiorcy
+            # metadata wiadomości (jak w dokumentacji)
+            msg.set_metadata("msg_type", "INF")
+            msg.set_metadata("sensor_id", "01")
+            msg.set_metadata("sensor_type", "TERM")
+            # pomiar (musi być string)
+            msg.body = str(self.temp)
+
+            await self.send(msg)
+
+            self.exit_code = "Job Finished!"
+
+            # stop agent from behaviour
+            # await self.agent.stop()
+
+            await asyncio.sleep(1)
 
     async def setup(self):
         self.b = self.SendTempToWindowsAgent()
         self.c = self.SendTempToBlindsAgent()
         self.d = self.SendUvToBlindsAgent()
+        self.e = self.SendTempToHeatingAgent()
         self.add_behaviour(self.b)
         self.add_behaviour(self.c)
         self.add_behaviour(self.d)
+        self.add_behaviour(self.e)
