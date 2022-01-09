@@ -7,6 +7,10 @@ if __name__ == "__main__":
     windows_agent = WindowsAgent("windows@localhost", "password")
     future = windows_agent.start()
     future.result() # wait for receiver agent to be prepared.
+    
+    blinds_agent = BlindsAgent("blinds@localhost", "password")
+    future = blinds_agent.start()
+    future.result() # wait for receiver agent to be prepared.
 
     sensors_agent = SensorsAgent("sensors@localhost", "password")
     future = sensors_agent.start()
@@ -19,4 +23,5 @@ if __name__ == "__main__":
         except KeyboardInterrupt:
             sensors_agent.stop()
             windows_agent.stop()
+            blinds_agent.stop()
             break
