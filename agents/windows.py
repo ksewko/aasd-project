@@ -8,13 +8,14 @@ class WindowsAgent(Agent):
     class RecvTemp(CyclicBehaviour):
 
         def recv_plan(self):
-            if self.temp < self.pref_temp:
-                if self.regulate_temp:
+            if not self.regulate_temp:
+                return
+            if self.temp != self.pref_temp:
+                if (self.pref_temp - self.temp) * (self.pref_temp - self.out_temp) >= 0:
                     if self.window_state == 'OPEN':
                         self.window_state = 'CLOSED'
                         print("Closed windows in room {}".format(self.room_id))
-            else:
-                if self.regulate_temp:
+                else:
                     if self.window_state == 'CLOSED':
                         self.window_state = 'OPEN'
                         print("Opened windows in room {}".format(self.room_id))
@@ -24,6 +25,7 @@ class WindowsAgent(Agent):
             self.room_id = '01'
             self.window_state = 'CLOSED'
             self.temp = 0 # aktualny pomiar 
+            self.out_temp = 0 # aktualny pomiar 
 
             self.pref_temp = 20 # preferowana z repo
             self.regulate_temp = True # aktualny plan z repo
@@ -31,8 +33,14 @@ class WindowsAgent(Agent):
         async def run(self):
             msg = await self.receive(timeout=10) 
             if msg:
-                print("Received temperature [windows]: {}".format(msg.body))
-                self.temp = int(msg.body)
+                if msg.metadata["sensor_type"] == "TERM":
+                    print("Received temperature [windows]: {}".format(msg.body))
+                    self.temp = int(msg.body)
+                elif msg.metadata["sensor_type"] == "OUT_TERM":
+                    print("Received outdoor temp [windows]: {}".format(msg.body))
+                    self.out_temp = int(msg.body)
+                else:
+                    print("Unknown sensor type {}".format(msg.metadata["sensor_type"]))
 
                 msg = Message(to="repo@localhost")       
                 msg.set_metadata("msg_type", "ASK")         
@@ -54,8 +62,7 @@ class WindowsAgent(Agent):
         self.rcv_temp = self.RecvTemp()
         template = Template() 
         template.set_metadata("msg_type", "INF")    # otrzymana wiadomość powinna pasować do templatki
-        template.set_metadata("sensor_id", "01") 
-        template.set_metadata("sensor_type", "TERM")
+        template.set_metadata("sensor_id", "01")
         self.add_behaviour(self.rcv_temp, template)
 
         # self.rcv_plan = self.RecvPlan()
