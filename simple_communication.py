@@ -18,7 +18,13 @@ if __name__ == "__main__":
     future = floor_heating_agent.start()
     future.result() # wait for receiver agent to be prepared.
 
-    sensors_agent = SensorsAgent("sensors@localhost", "password")
+    sensors_agent = SensorsAgent(
+        "sensors@localhost",
+        "password",
+        room_temps=[x for x in range(12, 24)],
+        out_temps=[x for x in range(0, 12)],
+        uv_values=[x for x in range(48, 60)]
+    )
     future = sensors_agent.start()
 
     print("Wait until user interrupts with ctrl+C")

@@ -53,7 +53,7 @@ class WindowsAgent(Agent):
             else:
                 print("Did not receive any message after 10 seconds")
 
-            await asyncio.sleep(1)
+            await asyncio.sleep(0.5)
 
     class RecvPlan(OneShotBehaviour): # odpala się kiedy dotrze wiadomość z planem
         pass
