@@ -1,0 +1,17 @@
+{
+    "rooms": [
+        {
+            "id": "01",
+            "regulated": "False"
+        },
+        {
+            "id": "02",
+            "regulated": "True"
+        },
+        {
+            "id": "03",
+            "regulated": "True"
+        }
+    ],
+    "preferred_temp": 20
+}
