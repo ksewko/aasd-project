@@ -31,12 +31,20 @@ if __name__ == "__main__":
         floor_heating.append(floor_heating_agent)
 
 
+    # sensors_agent = SensorsAgent(
+    #     "sensors@localhost",
+    #     "password",
+    #     room_temps=[x for x in range(12, 24)],
+    #     out_temps=[x for x in range(0, 12)],
+    #     uv_values=[x for x in range(48, 60)]
+    # )
+
     sensors_agent = SensorsAgent(
         "sensors@localhost",
         "password",
-        room_temps=[x for x in range(12, 24)],
-        out_temps=[x for x in range(0, 12)],
-        uv_values=[x for x in range(48, 60)]
+        room_temps=[x for x in range(23, 13, -1)],
+        out_temps=[x for x in range(25, -15, -2)],
+        uv_values=[x for x in range(70, 40, -3)]
     )
     future = sensors_agent.start()
 

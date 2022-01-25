@@ -33,25 +33,21 @@ class WindowsAgent(Agent):
 
         async def on_start(self):
             print("Starting behaviour [WindowsAgent {}]. . .".format(self.agent.room_id))
-            # self.room_id = '01'
-            self.window_state = 'CLOSED'
+            self.window_state = 'OPEN'
             self.temp = 0 # aktualny pomiar 
             self.out_temp = 0 # aktualny pomiar 
 
-            # self.pref_temp = 20 # preferowana z repo
-            # self.regulate_temp = True # aktualny plan z repo
 
         async def run(self):
             msg = await self.receive(timeout=10) 
             if msg:
                 if msg.metadata["sensor_type"] == "TERM":
-                    print("Received temperature [windows{}]: {}".format(self.agent.room_id, msg.body))
                     self.temp = int(msg.body)
                 elif msg.metadata["sensor_type"] == "OUT_TERM":
-                    print("Received outdoor temp [windows{}]: {}".format(self.agent.room_id, msg.body))
                     self.out_temp = int(msg.body)
                 else:
                     print("Unknown sensor type {}".format(msg.metadata["sensor_type"]))
+                print("Windows agent for room {}: inside temp {}, outside temp {}".format(self.agent.room_id, self.temp, self.out_temp))
 
                 msg = Message(to="repo@localhost")       
                 msg.set_metadata("msg_type", "ASK")         

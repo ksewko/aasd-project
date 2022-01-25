@@ -23,7 +23,6 @@ class BlindsAgent(Agent):
                 return
             if self.agent.regulate_temp and self.uv >= 50:
                 if self.temp < self.agent.pref_temp:
-                    print(self.agent.pref_temp)
                     if self.blinds_state == 'DOWN':
                         self.blinds_state = 'UP'
                         print("Blinds exposed in room {}".format(self.agent.room_id))
@@ -34,24 +33,21 @@ class BlindsAgent(Agent):
 
         async def on_start(self):
             print("Starting behaviour [BlindsAgent{}]. . .".format(self.agent.room_id))
-            # self.room_id = '01'
-            self.blinds_state = 'UP'
+            self.blinds_state = 'DOWN'
             self.temp = None # aktualny pomiar 
             self.uv = None
-            # self.pref_temp = 20 # preferowana z repo
-            # self.regulate_temp = True # aktualny plan z repo
+
 
         async def run(self):
             msg = await self.receive(timeout=10) 
             if msg:
                 if msg.metadata["sensor_type"] == "TERM":
-                    print("Received temperature [blinds{}]: {}".format(self.agent.room_id, msg.body))
                     self.temp = int(msg.body)
                 elif msg.metadata["sensor_type"] == "UV":
-                    print("Received UV [blinds{}]: {}".format(self.agent.room_id, msg.body))
                     self.uv = int(msg.body)
                 else:
                     print("Unknown sensor type {}".format(msg.metadata["sensor_type"]))
+                print("Blinds agent for room {}: inside temp {}, UV {}".format(self.agent.room_id, self.temp, self.uv))
 
                 msg = Message(to="repo@localhost")       
                 msg.set_metadata("msg_type", "ASK")         
@@ -74,7 +70,6 @@ class BlindsAgent(Agent):
         template = Template() 
         template.set_metadata("msg_type", "INF")    # otrzymana wiadomość powinna pasować do templatki
         template.set_metadata("sensor_id", self.room_id) 
-        # template.set_metadata("sensor_type", "TERM")
         self.add_behaviour(self.rcv_temp, template)
 
         # self.rcv_plan = self.RecvPlan()

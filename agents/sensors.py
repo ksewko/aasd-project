@@ -89,7 +89,8 @@ class SensorsAgent(Agent):
 
             if self.counter < len(self.agent.temp):
                 self.temp = self.agent.temp[self.counter]
-                print("---------------- {}".format(self.temp))
+                # print("---------------- {}".format(self.temp))
+                # print("----------------")
             else:
                 self.counter -= len(self.agent.temp)
                 self.temp = random.randint(18, 22)
@@ -140,7 +141,8 @@ class SensorsAgent(Agent):
 
             if self.counter < len(self.agent.temp):
                 self.temp = self.agent.temp[self.counter]
-                print(">>>>>>>>>>>>>{}".format(self.temp))
+                # print(">>>>>>>>>>>>>{}".format(self.temp))
+                # print(">>>>>>>>>>>>>")
             else:
                 self.counter -= len(self.agent.temp)
                 self.temp = random.randint(18, 22)

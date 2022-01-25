@@ -20,22 +20,22 @@ class FloorHeatingAgent(Agent):
         def recv_plan(self):
             if self.agent.regulate_temp:
                 self.is_heating_on = self.temp < self.agent.pref_temp
-                print("Heating in room {} is set to {}".format(self.agent.room_id, self.is_heating_on))
+                if self.is_heating_on:
+                    print("Heating is on in room {}\n".format(self.agent.room_id))
+                else:
+                    print("Heating is off in room {}\n".format(self.agent.room_id))
         
         async def on_start(self) -> None:
             print("Starting behavior [FloorHeatingAgent{}]. . .".format(self.agent.room_id))
-            # self.room_id = '01'
             self.is_heating_on = False
             self.temp = 0
-            # self.pref_temp = 20
-            # self.regulate_temp = True
 
         async def run(self) -> None:
             msg = await self.receive(timeout=10)
             if msg:
-                print("Received temperature [floor_heating{}]: {}".format(self.agent.room_id, msg.body))
                 self.temp = int(msg.body)
                 
+                print("Floor heating agent for room {}: inside temp {}".format(self.agent.room_id, self.temp))
                 msg = Message(to="repo@localhost")
                 msg.set_metadata("msg_type", "ASK")         
                 msg.set_metadata("room_id", self.agent.room_id)  
