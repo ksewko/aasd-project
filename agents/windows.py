@@ -34,8 +34,8 @@ class WindowsAgent(Agent):
         async def on_start(self):
             print("Starting behaviour [WindowsAgent {}]. . .".format(self.agent.room_id))
             self.window_state = 'OPEN'
-            self.temp = 0 # aktualny pomiar 
-            self.out_temp = 0 # aktualny pomiar 
+            self.temp = 0 
+            self.out_temp = 0 
 
 
         async def run(self):
@@ -55,20 +55,20 @@ class WindowsAgent(Agent):
                 msg.body = ''                  
                 await self.send(msg)
 
-                self.recv_plan() # zamiast odpalania RecvPlan(OneShotBehaviour)
+                self.recv_plan() # replaces RecvPlan
 
             else:
                 print("Did not receive any message after 10 seconds")
 
             await asyncio.sleep(0.5)
 
-    class RecvPlan(OneShotBehaviour): # odpala się kiedy dotrze wiadomość z planem
+    class RecvPlan(OneShotBehaviour): # run once you get the message with plan of regulation
         pass
 
     async def setup(self):
         self.rcv_temp = self.RecvTemp()
         template = Template() 
-        template.set_metadata("msg_type", "INF")    # otrzymana wiadomość powinna pasować do templatki
+        template.set_metadata("msg_type", "INF")    
         template.set_metadata("sensor_id", self.room_id)
         self.add_behaviour(self.rcv_temp, template)
 

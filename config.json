@@ -2,7 +2,7 @@
     "rooms": [
         {
             "id": "01",
-            "regulated": 0
+            "regulated": 1
         },
         {
             "id": "02",

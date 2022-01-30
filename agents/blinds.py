@@ -34,7 +34,7 @@ class BlindsAgent(Agent):
         async def on_start(self):
             print("Starting behaviour [BlindsAgent{}]. . .".format(self.agent.room_id))
             self.blinds_state = 'DOWN'
-            self.temp = None # aktualny pomiar 
+            self.temp = None 
             self.uv = None
 
 
@@ -55,20 +55,20 @@ class BlindsAgent(Agent):
                 msg.body = ''                  
                 await self.send(msg)
 
-                self.recv_plan() # zamiast odpalania RecvPlan(OneShotBehaviour)
+                self.recv_plan() 
 
             else:
                 print("Did not receive any message after 10 seconds")
 
             await asyncio.sleep(1)
 
-    class RecvPlan(OneShotBehaviour): # odpala się kiedy dotrze wiadomość z planem
+    class RecvPlan(OneShotBehaviour): 
         pass
 
     async def setup(self):
         self.rcv_temp = self.RecvTemp()
         template = Template() 
-        template.set_metadata("msg_type", "INF")    # otrzymana wiadomość powinna pasować do templatki
+        template.set_metadata("msg_type", "INF")    
         template.set_metadata("sensor_id", self.room_id) 
         self.add_behaviour(self.rcv_temp, template)
 

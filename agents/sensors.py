@@ -33,19 +33,15 @@ class SensorsAgent(Agent):
 
             for room in self.agent.rooms:
                 msg = Message(to="windows{}@localhost".format(room['id']))       # jid odbiorcy
-                # metadata wiadomości (jak w dokumentacji)
                 msg.set_metadata("msg_type", "INF")
                 msg.set_metadata("sensor_id", room['id'])
                 msg.set_metadata("sensor_type", "TERM")
-                # pomiar (musi być string)
                 msg.body = str(self.temp)
 
                 await self.send(msg)
 
             self.exit_code = "Job Finished!"
 
-            # stop agent from behaviour
-            # await self.agent.stop()
             self.counter += 1
             await asyncio.sleep(1)
 
@@ -63,20 +59,16 @@ class SensorsAgent(Agent):
                 self.temp = random.randint(18, 22)
 
             for room in self.agent.rooms:
-                msg = Message(to="windows{}@localhost".format(room['id']))       # jid odbiorcy
-                # metadata wiadomości (jak w dokumentacji)
+                msg = Message(to="windows{}@localhost".format(room['id']))    
                 msg.set_metadata("msg_type", "INF")
                 msg.set_metadata("sensor_id", room['id'])
                 msg.set_metadata("sensor_type", "OUT_TERM")
-                # pomiar (musi być string)
                 msg.body = str(self.temp)
 
                 await self.send(msg)
 
             self.exit_code = "Job Finished!"
 
-            # stop agent from behaviour
-            # await self.agent.stop()
             self.counter += 1
             await asyncio.sleep(1)
 
@@ -89,18 +81,16 @@ class SensorsAgent(Agent):
 
             if self.counter < len(self.agent.temp):
                 self.temp = self.agent.temp[self.counter]
-                # print("---------------- {}".format(self.temp))
-                # print("----------------")
             else:
                 self.counter -= len(self.agent.temp)
                 self.temp = random.randint(18, 22)
             
             for room in self.agent.rooms:
-                msg = Message(to="blinds{}@localhost".format(room['id']))       # jid odbiorcy
+                msg = Message(to="blinds{}@localhost".format(room['id']))       
                 msg.set_metadata("msg_type", "INF")
                 msg.set_metadata("sensor_id", room['id'])
                 msg.set_metadata("sensor_type", "TERM")
-                msg.body = str(self.temp)                   # pomiar (musi być string)
+                msg.body = str(self.temp)                  
                 await self.send(msg)
             self.exit_code = "Job Finished!"
             self.counter += 1
@@ -117,14 +107,14 @@ class SensorsAgent(Agent):
                 self.uv = self.agent.uv_values[self.counter]
             else:
                 self.counter -= len(self.agent.uv_values)
-                self.uv = random.randint(0, 100)	#poziom naslonecznienia w % - 0% (pełne zachmurzenie) , 100% (pełne słońce)
+                self.uv = random.randint(0, 100)	
             
             for room in self.agent.rooms:
-                msg = Message(to="blinds{}@localhost".format(room['id']))       # jid odbiorcy
-                msg.set_metadata("msg_type", "INF")         # metadata wiadomości (jak w dokumentacji)
+                msg = Message(to="blinds{}@localhost".format(room['id']))       
+                msg.set_metadata("msg_type", "INF")         
                 msg.set_metadata("sensor_id", room['id'])  
                 msg.set_metadata("sensor_type", "UV")    
-                msg.body = str(self.uv)                   # pomiar (musi być string)
+                msg.body = str(self.uv)                   
 
                 await self.send(msg)
 
@@ -141,27 +131,21 @@ class SensorsAgent(Agent):
 
             if self.counter < len(self.agent.temp):
                 self.temp = self.agent.temp[self.counter]
-                # print(">>>>>>>>>>>>>{}".format(self.temp))
-                # print(">>>>>>>>>>>>>")
             else:
                 self.counter -= len(self.agent.temp)
                 self.temp = random.randint(18, 22)
 
             for room in self.agent.rooms:
-                msg = Message(to="floor_heating{}@localhost".format(room['id']))       # jid odbiorcy
-                # metadata wiadomości (jak w dokumentacji)
+                msg = Message(to="floor_heating{}@localhost".format(room['id']))      
                 msg.set_metadata("msg_type", "INF")
                 msg.set_metadata("sensor_id", room['id'])
                 msg.set_metadata("sensor_type", "TERM")
-                # pomiar (musi być string)
                 msg.body = str(self.temp)
 
                 await self.send(msg)
 
             self.exit_code = "Job Finished!"
 
-            # stop agent from behaviour
-            # await self.agent.stop()
             self.counter += 1
             await asyncio.sleep(1)
 
